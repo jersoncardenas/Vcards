@@ -1,0 +1,108 @@
+#loginAdmin {
+  width: min(500px, calc(100vw - 30px)) !important;
+  max-height: calc(100dvh - 30px) !important;
+  margin: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 22px !important;
+  overflow: auto !important;
+  background: #fff !important;
+  box-shadow: 0 28px 85px rgba(0,0,0,.35) !important;
+}
+#loginAdmin .login-form {
+  padding: 38px 42px 36px !important;
+  display: grid !important;
+  gap: 20px !important;
+  background: #fff !important;
+  font-family: Poppins, sans-serif !important;
+}
+#loginAdmin .login-heading { display:grid !important; grid-template-columns:76px 1fr !important; align-items:center !important; gap:20px !important; padding-bottom:20px !important; border-bottom:1px solid #e7e7e7 !important; }
+#loginAdmin .security-shield { width:76px !important; height:76px !important; display:grid !important; place-items:center !important; border-radius:20px !important; color:#111 !important; background:#f2f2f2 !important; }
+#loginAdmin .security-shield svg { display:block !important; width:48px !important; height:54px !important; }
+#loginAdmin .admin-label { display:block !important; margin-bottom:5px !important; color:#777 !important; font-size:10px !important; font-weight:700 !important; letter-spacing:1.7px !important; text-align:left !important; }
+#loginAdmin .login-form h2 {
+  margin: 0 0 7px !important;
+  color: #111 !important;
+  font-size: 25px !important;
+  line-height:1.2 !important;
+  text-align: left !important;
+}
+#loginAdmin .login-form p {
+  margin: 0 !important;
+  color: #6c6c6c !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  text-align: left !important;
+}
+#loginAdmin .login-form label {
+  display: grid !important;
+  gap: 7px !important;
+  margin: 0 !important;
+  color: #222 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+}
+#loginAdmin .login-form input {
+  display: block !important;
+  width: 100% !important;
+  height: 49px !important;
+  margin: 0 !important;
+  padding: 11px 13px !important;
+  border: 1px solid #d2d2d2 !important;
+  border-radius: 11px !important;
+  background: #fafafa !important;
+  font: inherit !important;
+}
+#loginAdmin .login-form input:focus {
+  outline: none !important;
+  border-color: #111 !important;
+  box-shadow: 0 0 0 3px rgba(0,0,0,.08) !important;
+  background:#fff !important;
+}
+#loginAdmin .password-wrap { position: relative !important; width: 100% !important; }
+#loginAdmin .password-wrap input { padding-right: 72px !important; }
+#loginAdmin .show-password {
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 6px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #111 !important;
+  box-shadow: none !important;
+  font: 600 11px Poppins, sans-serif !important;
+}
+#loginAdmin .login-actions {
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  margin-top: 3px !important;
+}
+#loginAdmin .login-actions button {
+  width: auto !important;
+  min-height: 46px !important;
+  margin: 0 !important;
+  padding: 10px 16px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  font: 600 13px Poppins, sans-serif !important;
+}
+#loginAdmin #cancelarLogin { background: #ededed !important; color: #222 !important; }
+#loginAdmin #entrarAdmin { background: #111 !important; color: #fff !important; box-shadow:0 8px 18px rgba(0,0,0,.18) !important; }
+#loginAdmin #entrarAdmin:hover { background:#2b2b2b !important; transform:translateY(-1px) !important; }
+#loginAdmin .login-error { padding: 9px 11px !important; border-radius: 7px !important; background: #fff0f0 !important; color: #a22b2b !important; }
+@media (max-width: 420px) {
+  #loginAdmin .login-form { padding: 26px 21px !important; gap:17px !important; }
+  #loginAdmin .login-heading { grid-template-columns:58px 1fr !important; gap:14px !important; padding-bottom:17px !important; }
+  #loginAdmin .security-shield { width:58px !important; height:58px !important; border-radius:15px !important; }
+  #loginAdmin .security-shield svg { width:36px !important; height:42px !important; }
+  #loginAdmin .login-form h2 { font-size:21px !important; }
+  #loginAdmin .login-heading p { display:none !important; }
+  #loginAdmin .login-actions { display: grid !important; grid-template-columns: 1fr 1fr !important; }
+  #loginAdmin .login-actions button { width: 100% !important; }
+}

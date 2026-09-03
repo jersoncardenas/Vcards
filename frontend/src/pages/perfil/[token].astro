@@ -1,0 +1,76 @@
+---
+import SkeletonLoader from "../../components/Skeleton_perfil.astro";
+import PageLoader from "../../components/PageLoader.astro";
+export const prerender = false; // Esto es para cargar la pagina de forma dinamica
+---
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link id="estilosEmpresa" href="" rel="stylesheet">
+    <title id="titulo">Perfil</title>
+  </head>
+  <body>
+    <PageLoader mensaje="Cargando perfil..." automatico={false} />
+        <!-- Aqui se muestra una plantilla mientras se carga la demas informacion -->
+        <SkeletonLoader tipo="formulario" />
+
+    <div class="card" style="display: none;">
+      <div class="profile-container">
+        <div class="logo">
+          <img id="logoEmpresa" src="" alt="Logo Empresa" />
+        </div>
+        <div class="background-shape">
+          <img id="fondoEmpresa" src="" alt="" />
+        </div>
+        <div class="profile-image">
+          <img id="fotoPerfil" src="" alt="Foto de usuario" />
+        </div>
+      </div>
+      <div class="info">
+        <h2 id="nombreCompleto">Cargando...</h2>
+        <p class="cargo" id="areaResponsable"></p>
+        <p class="descripcion" id="descripcion"></p>
+      </div>
+      <div class="section contact">
+        <h3>Datos de contacto</h3>
+        <div class="contactos">
+          <div class="imagen">
+            <img id="iconoTelefono" src="" alt="Teléfono" />
+          </div>
+          <div class="texto"> 
+            <p id="telefono"></p>
+          </div>
+        </div>
+        <div class="contactos">
+          <div class="imagen">
+            <img id="iconoCorreo" src="" alt="Correo" />
+          </div>
+          <div class="texto">
+            <p id="correo"></p>
+          </div>
+        </div>
+      </div>
+      <div class="paginas">
+        <h3>Nuestras páginas</h3>
+        <div class="columnas">
+          <div class="columna">
+            <img class="img_pagina_uno" id="iconoDecorceramica" src="" alt="Decorceramica" />
+            <p><a href="https://www.decorceramica.com">Decorceramica</a></p>
+          </div>
+          <div class="columna-dos">
+            <img class="img_pagina_dos" id="iconoNovacasa" src="" alt="Novacasa" />
+            <p><a href="https://www.novacasacenter.com/">Novacasa</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="section-redes">
+        <h3>Nuestras redes sociales</h3>
+        <div class="social-icons" id="redesSociales"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/js/perfil/perfil.js"></script>
+  </body>
+</html>

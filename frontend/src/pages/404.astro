@@ -1,0 +1,25 @@
+---
+import PageLoader from "../components/PageLoader.astro";
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Página no encontrada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/exepciones/exepcion_404.css">
+</head>
+<body>
+    <PageLoader mensaje="Cargando..." />
+    <div class="container">
+        <div class="titulo">
+            <h1>404</h1>
+            <h3>Pagina no encontrada</h3>
+        </div>
+        <div class="descripcion">
+            <h3>La ruta que intentas acceder no existe</h3>
+        </div>
+        <a href="/">Volver al inicio</a>
+    </div>
+</body>
+</html>

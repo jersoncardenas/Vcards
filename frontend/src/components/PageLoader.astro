@@ -1,0 +1,33 @@
+---
+const { mensaje = "Cargando...", automatico = true } = Astro.props;
+---
+
+<div id="cargadorPagina" class="page-loader" data-auto={automatico ? "true" : "false"} role="status" aria-live="polite" aria-label={mensaje}>
+  <svg class="loader-ring" viewBox="0 0 64 64" aria-hidden="true">
+    <circle class="loader-arc" cx="32" cy="32" r="23"></circle>
+    <circle class="loader-arc arc-two" cx="32" cy="32" r="23"></circle>
+  </svg>
+  <span class="loader-text">{mensaje}</span>
+</div>
+
+<style is:global>
+  .page-loader{position:fixed;inset:0;z-index:3000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#fff;opacity:1;visibility:visible;transition:opacity .3s ease,visibility .3s ease}
+  .page-loader.hidden{opacity:0;visibility:hidden}
+  .loader-ring{width:72px;height:72px;overflow:visible;animation:girarCargador .9s linear infinite}
+  .loader-arc{fill:none;stroke:#454545;stroke-width:9;stroke-linecap:round;stroke-dasharray:52 93}
+  .loader-arc.arc-two{stroke-dashoffset:72.5}
+  .loader-text{color:#454545;font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;letter-spacing:.3px}
+  @keyframes girarCargador{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){.loader-ring{animation-duration:1.8s}.page-loader{transition:none}}
+</style>
+
+<script>
+  const ocultarCargadoresAutomaticos = () => {
+    document.querySelectorAll('.page-loader[data-auto="true"]').forEach((cargador) => {
+      cargador.classList.add("hidden");
+      setTimeout(() => cargador.remove(), 350);
+    });
+  };
+  if (document.readyState === "complete") ocultarCargadoresAutomaticos();
+  else window.addEventListener("load", ocultarCargadoresAutomaticos, { once: true });
+</script>

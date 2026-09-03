@@ -1,0 +1,122 @@
+---
+import Skeleton from "../../components/Skeleton_perfil.astro";
+import PageLoader from "../../components/PageLoader.astro";
+export const prerender = false; // Se establece que es una pagina dinamica
+---
+<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title id="page-title">Formulario QR</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+        <link id="estilosEmpresa" rel="stylesheet" href="" />
+        <style>
+            .form-group select {
+                width: 100%;
+                padding: 8px;
+                border: none;
+                border-bottom: 1px solid #ccc;
+                background: transparent;
+                font: inherit;
+                color: #333;
+            }
+            .form-group select:focus { outline: none; border-bottom-color: #000; }
+            .empresa { grid-column: 3; grid-row: 3; }
+            .btn-container { grid-column: 3; grid-row: 4; }
+            .file-upload { grid-row: 1 / 5; }
+            @media (max-width: 768px) {
+                .empresa { width: 100%; }
+            }
+        </style>
+    </head>
+    <body>
+        <PageLoader mensaje="Cargando formulario..." />
+        <!-- Aqui se muestra una plantilla mientras se carga la demas informacion -->
+        <Skeleton tipo="formulario" />
+
+        <!-- Aqui ya se empieza a construir la estructura de lo que finalmente se mostrara -->
+        <div class="container" id="form-container" style="display:none;">
+            <div class="logo-form">
+                <div class="logo">
+                    <img id="logoEmpresa" src="" alt="Logo de la empresa">
+                </div>
+                <div class="titulo">
+                    <h1 >Ingresa tus datos para generar tu QR</h1>
+                </div>
+            </div>
+
+            <!-- Formulario -->
+            <form class="form" method="POST" action="" enctype="multipart/form-data" id="form">
+                <!-- Foto -->
+                <div class="file-upload">
+                    <label class="upload-box" for="fileInput">
+                    <span class="placeholder-text">Selecciona tus foto</span>
+                    <input type="file" id="fileInput" name="foto" accept="image/*"/>
+                    <img class="preview" alt="Vista previa de imagen" />
+                    </label>
+                </div>
+
+                <!-- Columna izquierda -->
+                <div class="form-group nombre">
+                    <label>Nombre completo</label>
+                    <input type="text" name="nombre" placeholder="Ingresa tu nombre completo" />
+                </div>
+                <div class="form-group descripcion">
+                    <label>Descripción del cargo</label>
+                    <input type="text" name="descripcion" placeholder="Ingresa la descripción de tu cargo" />
+                </div>
+                <div class="form-group telefono">
+                    <label>Teléfono corporativo</label>
+                    <input type="text" name="telefono" placeholder="Ingresa tu número de teléfono" />
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="form-group cargo">
+                    <label>Cargo</label>
+                    <input type="text" name="area" placeholder="Ingresa tu cargo completo" />
+                </div>
+                <div class="form-group correo">
+                    <label>Correo corporativo</label>
+                    <input
+                        type="email"
+                        name="correo"
+                        placeholder="nombre@empresa.com"
+                        pattern="^[^@\s]+@(novacasacenter\.com|grupodecor\.com|klipengroup\.com|klpcomercial\.com|decorceramica\.com)$"
+                        title="Usa uno de los correos corporativos autorizados"
+                        autocomplete="email"
+                    />
+                </div>
+                <div class="form-group empresa">
+                    <label for="empresaId">Empresa</label>
+                    <select id="empresaId" name="empresa_id" required>
+                        <option value="">Selecciona una empresa</option>
+                        <option value="2">Novacasa</option>
+                        <option value="3">Decorceramica</option>
+                        <option value="4">KLP</option>
+                        <option value="5">Klipen</option>
+                        <option value="6">Kohler</option>
+                        <option value="7">Decor Corporativo</option>
+                    </select>
+                </div>
+
+                <!-- Botón centrado -->
+                <div class="btn-container">
+                    <button type="submit">Generar QR</button>
+                </div>
+            </form>
+    
+            <!-- Modal de error -->
+            <div id="error-modal">
+                <div class="modal-content">
+                    <p id="error-text"></p>
+                    <button id="close-modal">Cerrar</button>
+                </div>
+            </div>
+        </div> 
+        
+    <script src="/src/js/formulario/formulario.js"></script>
+    <script src="/src/js/validaciones/validaciones.js"></script>
+    </body>
+</html>
+

@@ -1,0 +1,17 @@
+# Configuración privada
+backend/application-local.properties
+frontend/.env
+
+# Java / Maven
+backend/target/
+
+# Node / Astro
+frontend/node_modules/
+frontend/.astro/
+frontend/dist/
+
+# Editores y sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

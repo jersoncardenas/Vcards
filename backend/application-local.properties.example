@@ -1,0 +1,4 @@
+spring.datasource.url=jdbc:postgresql://localhost:5432/vcards
+spring.datasource.username=postgres
+spring.datasource.password=CAMBIA_ESTA_CONTRASENA
+app.frontend-url=http://localhost:4321

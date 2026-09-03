@@ -1,0 +1,104 @@
+---
+import PageLoader from "../components/PageLoader.astro";
+// Aqui se extrae inicialmente el id y el nombre de la empresa
+const empresas = [
+  { id: 2, nombre: "Novacasa" },
+  { id: 3, nombre: "Decorceramica" },
+  { id: 4, nombre: "KLP" },
+  { id: 5, nombre: "Klipen" },
+  { id: 6, nombre: "Kohler" },
+  { id: 7, nombre: "Decor Corporativo" },
+];
+
+const urlNovacasa = "/formulario/2";
+const urlDecorCeramica = "/formulario/3";
+const urlKlp = "/formulario/4";
+const urlKlipen = "/formulario/5";
+const urlKohler = "/formulario/6";
+const urlDecorCoorp = "/formulario/7";
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genera tu vCard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/index/vcard.css">
+    <style>
+      .admin-access { position: fixed; right: 18px; bottom: 18px; padding: 9px 14px; border: 0; border-radius: 9px; background: #17394d; color: white; font: 500 13px Poppins, sans-serif; box-shadow: 0 5px 16px rgba(0,0,0,.18); cursor: pointer; }
+      #loginAdmin { border: 0; border-radius: 22px; padding: 0; width: min(760px, calc(100% - 30px)); overflow: hidden; box-shadow: 0 28px 90px rgba(8,28,40,.38); }
+      #loginAdmin::backdrop { background: rgba(8,25,36,.72); backdrop-filter: blur(5px); }
+      .login-layout { display: grid; grid-template-columns: .9fr 1.15fr; font-family: Poppins, sans-serif; background: #fff; }
+      .login-brand { position: relative; padding: 42px 34px; color: white; background: linear-gradient(145deg,#102f42,#17666c); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; min-height: 470px; }
+      .login-brand::after { content:""; position:absolute; width:260px; height:260px; border:45px solid rgba(138,212,207,.13); border-radius:50%; right:-135px; bottom:-100px; }
+      .brand-mark { width: 62px; height: 62px; border-radius: 18px; display:grid; place-items:center; background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.22); }
+      .brand-mark svg { width:31px; height:31px; }.login-brand h3 { margin:24px 0 10px; font-size:26px; line-height:1.2; }.login-brand p { margin:0; color:#d5ebeb; font-size:13px; line-height:1.7; }
+      .secure-note { display:flex; gap:9px; align-items:center; color:#c7e3e2; font-size:12px; position:relative; z-index:1; }.secure-dot{width:8px;height:8px;border-radius:50%;background:#7ce0ba;box-shadow:0 0 0 5px rgba(124,224,186,.12)}
+      .login-form { padding: 42px 38px 34px; display: grid; align-content:center; gap: 18px; }
+      .login-eyebrow { color:#177a7c !important; font-size:11px !important; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; }.login-form h2, .login-form p { margin: 0; }.login-form h2{font-size:27px;color:#172b3a;margin-top:5px}.login-subtitle { color: #71808a; font-size: 13px; line-height:1.6; margin-top:5px !important; }
+      .login-form label { display: grid; gap: 7px; font-size: 12px; color:#344652; font-weight: 600; text-align: left; }
+      .login-form input { width: 100%; padding: 12px 13px; border: 1px solid #d5dce1; border-radius: 10px; font: inherit; background:#f9fbfc; transition:.2s; }.login-form input:focus{outline:none;border-color:#299397;box-shadow:0 0 0 4px rgba(41,147,151,.12);background:#fff}
+      .password-wrap { position:relative; }.password-wrap input{padding-right:72px}.show-password{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:none;color:#177a7c;font:600 11px Poppins;cursor:pointer;padding:7px}
+      .login-actions { display: grid; grid-template-columns:1fr 1.4fr; gap: 10px; margin-top:4px; }.login-actions button { border: 0; border-radius: 10px; padding: 12px 15px; font: inherit; font-size:13px;font-weight: 600; cursor: pointer; transition:.2s; }
+      #entrarAdmin { background: linear-gradient(135deg,#177a7c,#125b68); color: white; box-shadow:0 7px 18px rgba(23,122,124,.22); }#entrarAdmin:hover{transform:translateY(-1px)}#cancelarLogin { background: #edf1f3;color:#40515c }.login-error { padding:10px 12px;border-radius:8px;background:#fff0f0;color: #a22b2b !important; font-size:12px !important;font-weight: 600; }
+      @media(max-width:650px){.login-layout{grid-template-columns:1fr}.login-brand{min-height:auto;padding:24px}.login-brand>div p,.secure-note{display:none}.login-brand h3{font-size:20px;margin:12px 0 0}.brand-mark{width:48px;height:48px}.login-form{padding:28px 24px}.login-form h2{font-size:23px}}
+    </style>
+    <link rel="stylesheet" href="/css/admin-login.css">
+</head>
+<body>
+    <PageLoader mensaje="Cargando..." />
+    <div class="container">
+        <img src="../imagenes/grupodecor/logo.png" alt="Logo institucional de Grupo Decor">
+        <h2>Genera tu vCard – Tarjeta de Presentación</h2>
+        <p>Una vCard (tarjeta de presentación digital) es una forma práctica y moderna de compartir tu información de contacto. Con ella puedes incluir tu nombre, correo electrónico, número de teléfono, cargo y otros datos relevantes en un formato que puede guardarse fácilmente en dispositivos móviles o aplicaciones de contactos.</p>
+        <strong>Antes de ingresar tus datos y generar tu vCard, por favor escoge tu departamento.</strong>
+        <!-- Primera fila con 3 logos -->
+        <div class="logos fila-3">
+            <div class="btn">
+                <a href={urlNovacasa}><button><img src="../imagenes/novacasa.png" alt="Logo Novacasa"></button></a>
+            </div>
+            <div class="btn">
+                <a href={urlDecorCeramica}><button><img src="../imagenes/decorceramica.png" alt="Logo Decorceramica"></button></a>
+            </div>
+        </div>
+        <!-- Segunda fila con 4 logos -->
+        <div class="logos fila-4">
+            <div class="btn">
+                <a href={urlKlp}><button><img src="../imagenes/klp.png" alt="Logo KLP"></button></a>
+            </div>
+            <div class="btn">
+                <a href={urlKlipen}><button><img src="../imagenes/klipen.png" alt="Logo Klipen"></button></a>
+            </div>
+            <div class="btn">
+                <a href={urlKohler}><button><img src="../imagenes/kohler.png" alt="Logo Kohler"></button></a>
+            </div>
+            <div class="btn">
+                <a href={urlDecorCoorp}><button><img src="../imagenes/decor_coorporativo.png" alt="Logo Decor Corporativo"></button></a>
+            </div>
+        </div>
+    </div>
+    <button class="admin-access" id="abrirLogin" type="button">Administración</button>
+    <dialog id="loginAdmin">
+      <form class="login-form" id="formLoginAdmin">
+        <div class="login-heading">
+          <div class="security-shield" aria-hidden="true">
+            <svg viewBox="0 0 64 72" fill="none">
+              <path d="M32 3 57 13v17c0 18-10.4 31.9-25 38C17.4 61.9 7 48 7 30V13L32 3Z" fill="currentColor"/>
+              <rect x="21" y="31" width="22" height="18" rx="4" fill="white"/>
+              <path d="M25 31v-5a7 7 0 0 1 14 0v5" stroke="white" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="32" cy="39" r="2.5" fill="#111"/><path d="M32 41v4" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div><span class="admin-label">VCARDS CORPORATIVAS</span><h2>Acceso administrativo</h2><p>Ingresa tus credenciales para administrar colaboradores y perfiles.</p></div>
+        </div>
+        <label>Usuario<input id="usuarioAdmin" autocomplete="username" placeholder="Ingresa tu usuario" required /></label>
+        <label>Contraseña<div class="password-wrap"><input id="claveAdmin" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required /><button class="show-password" id="mostrarClave" type="button">Mostrar</button></div></label>
+        <p class="login-error" id="errorLogin" hidden>Usuario o contraseña incorrectos.</p>
+        <div class="login-actions"><button id="cancelarLogin" type="button">Cancelar</button><button id="entrarAdmin" type="submit">Ingresar</button></div>
+      </form>
+    </dialog>
+    <script type="module" src="/src/js/admin/login.js"></script>
+</body>
+</html>

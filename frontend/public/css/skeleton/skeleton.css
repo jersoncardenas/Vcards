@@ -1,0 +1,230 @@
+/* --- Reset general --- */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* --- Skeleton flotante --- */
+#skeleton-formulario {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* Cuando desaparece el skeleton */
+#skeleton-formulario.skeleton-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#skeleton-formulario.skeleton-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* --- Tarjeta del skeleton --- */
+.skeleton-card {
+  width: 90%;
+  max-width: 100vw;
+  height: 90%;
+  max-height: 100vh;
+  background: #444444;
+  padding: 20px;
+  border-radius: 12px;
+  animation: pulse 1.5s infinite;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.skeleton-logo {
+  width: 100px;
+  height: 100px;
+  background: #ccc;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+}
+
+.skeleton-title {
+  height: 24px;
+  width: 60%;
+  background: #ddd;
+  margin: 1rem auto;
+  border-radius: 4px;
+}
+
+.skeleton-line {
+  height: 16px;
+  width: 80%;
+  background: #e0e0e0;
+  margin: 0.5rem auto;
+  border-radius: 4px;
+}
+
+.skeleton-button {
+  height: 40px;
+  width: 50%;
+  background: #d0d0d0;
+  margin: 1rem auto;
+  border-radius: 20px;
+}
+
+/* --- Animación de parpadeo --- */
+@keyframes pulse {
+  0% { background-color: #eee; }
+  50% { background-color: #ddd; }
+  100% { background-color: #eee; }
+}
+
+/* --- Formulario --- */
+#form-container {
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+/* visible cuando ya carga */
+#form-container.visible {
+  opacity: 1;
+}
+
+body.formulario-visible {
+  display: block !important;
+  overflow: auto !important;
+}
+
+@media (max-width: 320px){
+  /* Ajuste general de la tarjeta */
+  .skeleton-card {
+    width: 95%;
+    padding: 12px;
+    border-radius: 8px;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  /* Logo más compacto */
+  .skeleton-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Título más corto */
+  .skeleton-title {
+    height: 20px;
+    width: 80%;
+    margin: 0.75rem auto;
+  }
+
+  /* Líneas más delgadas y más anchas */
+  .skeleton-line {
+    height: 14px;
+    width: 80%;
+    margin: 0.4rem auto;
+  }
+
+  /* Botón más pequeño y centrado */
+  .skeleton-button {
+    height: 36px;
+    width: 70%;
+    margin: 1rem auto;
+    border-radius: 18px;
+  }
+}
+
+@media (min-width: 321px) and (max-width: 375px){
+.skeleton-card {
+    width: 92%;
+    padding: 16px;
+    border-radius: 10px;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .skeleton-logo {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 0.75rem;
+  }
+
+  .skeleton-title {
+    height: 22px;
+    width: 75%;
+    margin: 0.75rem auto;
+  }
+
+  .skeleton-line {
+    height: 15px;
+    width: 75%;
+    margin: 0.5rem auto;
+  }
+
+  .skeleton-button {
+    height: 38px;
+    width: 65%;
+    margin: 1rem auto;
+    border-radius: 18px;
+  }
+}
+
+@media (min-width: 376px) and (max-width: 425px){
+.skeleton-card {
+    width: 90%;
+    padding: 18px;
+    border-radius: 10px;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .skeleton-logo {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 0.75rem;
+  }
+
+  .skeleton-title {
+    height: 22px;
+    width: 75%;
+    margin: 0.75rem auto;
+  }
+
+  .skeleton-line {
+    height: 15px;
+    width: 85%;
+    margin: 0.5rem auto;
+  }
+
+  .skeleton-button {
+    height: 38px;
+    width: 65%;
+    margin: 1rem auto;
+    border-radius: 18px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px){
+
+}
+
+@media (min-width: 1025px) and (max-width: 1440px){
+
+}
+
+@media (min-width: 1441px) and (max-width: 2560px){
+
+}
+
+@media (min-width: 2561px){
+
+}

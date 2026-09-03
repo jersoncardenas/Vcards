@@ -1,0 +1,25 @@
+---
+import PageLoader from "../../components/PageLoader.astro";
+export const prerender = false;
+const { token } = Astro.params;
+---
+<html lang="es">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/vista_qr/vista_QR.css">
+    <title>Tu QR</title>
+  </head>
+  <body data-token={token}>
+    <PageLoader mensaje="Generando QR..." />
+    <div class="contenedor">
+      <div class="carta">
+        <h2 id="saludo">Cargando QR...</h2>
+        <img id="qr" alt="QR" />
+        <button id="descargar">Descargar</button>
+      </div>
+    </div>
+    <script type="module" src="/src/js/vista_QR/mostrar_qr.js"></script>
+  </body>
+</html>

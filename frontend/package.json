@@ -1,0 +1,20 @@
+{
+  "name": "vcar-frontend",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/node": "^11.1.4",
+    "astro": "^7.2.8",
+    "bcryptjs": "^3.0.3",
+    "lucide": "^1.40.0",
+    "pg": "^8.23.0",
+    "qr-code-styling": "^1.9.2",
+    "qrcode": "^1.5.4"
+  }
+}

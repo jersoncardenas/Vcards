@@ -1,0 +1,95 @@
+---
+import PageLoader from "../components/PageLoader.astro";
+export const prerender = false;
+---
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Administración | vCards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+  <PageLoader mensaje="Cargando..." automatico={false} />
+  <header class="topbar">
+    <div><span class="eyebrow">VCARDS CORPORATIVAS</span><h1>Panel administrativo</h1></div>
+    <div class="header-actions"><a class="secondary icon-button" href="/"><i data-lucide="house" aria-hidden="true"></i>Volver al inicio</a><button class="logout icon-button" id="cerrarSesion" type="button"><i data-lucide="log-out" aria-hidden="true"></i>Cerrar sesión</button></div>
+  </header>
+
+  <main>
+    <section class="stats">
+      <article><span>Perfiles registrados</span><strong id="totalPerfiles">0</strong></article>
+      <article><span>Empresas configuradas</span><strong>6</strong></article>
+      <article><span>Dominios autorizados</span><strong>5</strong></article>
+    </section>
+
+    <nav class="tabs" aria-label="Secciones administrativas">
+      <button class="active icon-button" data-tab="perfiles"><i data-lucide="users" aria-hidden="true"></i>Colaboradores</button>
+      <button class="icon-button" data-tab="plantillas"><i data-lucide="link" aria-hidden="true"></i>Enlaces</button>
+    </nav>
+
+    <section id="perfiles" class="panel active">
+      <div class="panel-heading">
+        <div><h2>Colaboradores</h2><p>Edita la información o elimina perfiles registrados.</p></div>
+        <div class="user-filters">
+          <label><span>Empresa</span><select id="filtroEmpresa"><option value="">Todas las empresas</option></select></label>
+          <label><span>Buscar</span><input id="buscar" type="search" placeholder="Nombre, correo o cargo" /></label>
+        </div>
+      </div>
+      <div class="results-summary" id="resultadosUsuarios">Mostrando 0 colaboradores</div>
+      <div class="table-wrap">
+        <table><thead><tr><th>Colaborador</th><th>Empresa</th><th>Contacto</th><th>Acciones</th></tr></thead><tbody id="tablaUsuarios"></tbody></table>
+        <p id="sinUsuarios" class="empty" hidden>No hay colaboradores que coincidan con los filtros.</p>
+      </div>
+    </section>
+
+    <section id="plantillas" class="panel">
+      <div class="panel-heading"><div><h2>Enlaces por empresa</h2><p>Actualiza las redes sociales oficiales que aparecen en cada perfil.</p></div></div>
+      <form id="formConfiguracion" class="config-form">
+        <label>Empresa<select id="configEmpresa" required></select></label>
+        <div class="social-grid">
+          <label>Facebook<input id="facebook" type="url" placeholder="https://facebook.com/..." /></label>
+          <label>Instagram<input id="instagram" type="url" placeholder="https://instagram.com/..." /></label>
+          <label>X / Twitter<input id="twitter" type="url" placeholder="https://x.com/..." /></label>
+          <label>LinkedIn<input id="linkedin" type="url" placeholder="https://linkedin.com/..." /></label>
+        </div>
+        <button class="primary icon-button" type="submit"><i data-lucide="save" aria-hidden="true"></i>Guardar configuración</button>
+        <span id="configMensaje" class="success"></span>
+      </form>
+    </section>
+  </main>
+
+  <dialog id="editor">
+    <form id="formEditor" method="dialog">
+      <div class="dialog-heading"><h2><i data-lucide="user-round-pen" aria-hidden="true"></i>Editar colaborador</h2><button type="button" id="cerrarEditor" aria-label="Cerrar"><i data-lucide="x" aria-hidden="true"></i></button></div>
+      <input id="editToken" type="hidden" />
+      <label>Nombre<input id="editNombre" required /></label>
+      <label>Cargo<input id="editArea" required /></label>
+      <label>Descripción<input id="editDescripcion" required /></label>
+      <label>Teléfono<input id="editTelefono" required pattern="\d{10}" /></label>
+      <label>Correo<input id="editCorreo" required type="email" /></label>
+      <label>Empresa<select id="editEmpresa" required></select></label>
+      <div class="dialog-actions"><button type="button" class="secondary" id="cancelarEditor">Cancelar</button><button class="primary icon-button" type="submit"><i data-lucide="save" aria-hidden="true"></i>Guardar cambios</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="confirmarEliminacion" class="confirm-dialog">
+    <div class="confirm-content">
+      <div class="confirm-icon"><i data-lucide="triangle-alert" aria-hidden="true"></i></div>
+      <h2>¿Eliminar este perfil?</h2>
+      <p id="mensajeEliminacion">Esta acción no se puede deshacer.</p>
+      <div class="dialog-actions">
+        <button type="button" class="secondary" id="cancelarEliminacion">Cancelar</button>
+        <button type="button" class="delete-confirm icon-button" id="aceptarEliminacion"><i data-lucide="trash-2" aria-hidden="true"></i>Sí, eliminar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="notificacion" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="/src/js/admin/admin.js"></script>
+</body>
+</html>
