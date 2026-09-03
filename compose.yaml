@@ -1,0 +1,19 @@
+services:
+  vcar:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: vcar:latest
+    container_name: vcar
+    restart: unless-stopped
+    env_file:
+      - ./frontend/.env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 4321
+      DB_HOST: ${DOCKER_DB_HOST:-host.docker.internal}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "4321:4321"

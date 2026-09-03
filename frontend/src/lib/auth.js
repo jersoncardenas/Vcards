@@ -1,13 +1,14 @@
 import crypto from "node:crypto";
 
 const COOKIE = "vcar_admin";
-const firma = () => crypto.createHmac("sha256", import.meta.env.ADMIN_SESSION_SECRET).update(import.meta.env.ADMIN_USER).digest("hex");
+const entorno = (nombre) => process.env[nombre] || import.meta.env[nombre];
+const firma = () => crypto.createHmac("sha256", entorno("ADMIN_SESSION_SECRET")).update(entorno("ADMIN_USER")).digest("hex");
 
 export function autenticar(usuario, clave) {
-  return usuario === import.meta.env.ADMIN_USER && clave === import.meta.env.ADMIN_PASSWORD;
+  return usuario === entorno("ADMIN_USER") && clave === entorno("ADMIN_PASSWORD");
 }
 export function iniciarSesion(cookies) {
-  cookies.set(COOKIE, firma(), { httpOnly: true, sameSite: "strict", secure: import.meta.env.PROD, path: "/", maxAge: 60 * 60 * 8 });
+  cookies.set(COOKIE, firma(), { httpOnly: true, sameSite: "strict", secure: entorno("COOKIE_SECURE") === "true", path: "/", maxAge: 60 * 60 * 8 });
 }
 export function cerrarSesion(cookies) { cookies.delete(COOKIE, { path: "/" }); }
 export function esAdmin(cookies) { return cookies.get(COOKIE)?.value === firma(); }

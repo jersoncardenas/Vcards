@@ -1,12 +1,13 @@
 import pg from "pg";
 
 const globalDb = globalThis;
+const entorno = (nombre) => process.env[nombre] || import.meta.env[nombre];
 export const pool = globalDb.__vcarPool || new pg.Pool({
-  host: import.meta.env.DB_HOST,
-  port: Number(import.meta.env.DB_PORT),
-  database: import.meta.env.DB_NAME,
-  user: import.meta.env.DB_USER,
-  password: import.meta.env.DB_PASSWORD,
+  host: entorno("DB_HOST"),
+  port: Number(entorno("DB_PORT")),
+  database: entorno("DB_NAME"),
+  user: entorno("DB_USER"),
+  password: entorno("DB_PASSWORD"),
   max: 10,
 });
 if (import.meta.env.DEV) globalDb.__vcarPool = pool;
