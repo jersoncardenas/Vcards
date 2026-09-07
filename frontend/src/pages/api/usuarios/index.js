@@ -3,7 +3,7 @@ import { esAdmin, noAutorizado } from "../../../lib/auth.js";
 import { query } from "../../../lib/db.js";
 export const prerender = false;
 
-const correoValido = /^[^\s@]+@(novacasacenter\.com|grupodecor\.com|klipengroup\.com|klpcomercial\.com|decorceramica\.com)$/i;
+const correoValido = /^[^\s@]+@(novacasacenter\.com|grupodecor\.com|klipengroup\.com|klpcomercial\.com|decorceramica\.com|kohler\.com)$/i;
 const fotoBuffer = (foto) => Buffer.from(String(foto || "").split(",")[1] || "", "base64");
 
 export async function GET({ cookies }) {

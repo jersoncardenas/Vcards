@@ -152,7 +152,7 @@ function validarNombreCompleto(nombre) {
                     error = "El numero no debe ser mayor a 10 digitos";
                 }
             } else if (input.name === "correo") {
-                if (valor.length > 0 && !/^[^\s@]+@(novacasacenter\.com|grupodecor\.com|klipengroup\.com|klpcomercial\.com|decorceramica\.com)$/i.test(valor)) {
+                if (valor.length > 0 && !/^[^\s@]+@(novacasacenter\.com|grupodecor\.com|klipengroup\.com|klpcomercial\.com|decorceramica\.com|kohler\.com)$/i.test(valor)) {
                     error = "Usa un correo corporativo autorizado";
                 }
             }
@@ -246,8 +246,8 @@ function validarNombreCompleto(nombre) {
             showError("El numero debe tener exactamente 10 dígitos", "telefono");
             return;
         }
-        if (!correo || !/^[^\s@]+@(novacasacenter\.com|grupodecor\.com|klipengroup\.com|klpcomercial\.com|decorceramica\.com)$/i.test(correo)) {
-            showError("Correo no autorizado. Usa @novacasacenter.com, @grupodecor.com, @klipengroup.com, @klpcomercial.com o @decorceramica.com", "correo");
+        if (!correo || !/^[^\s@]+@(novacasacenter\.com|grupodecor\.com|klipengroup\.com|klpcomercial\.com|decorceramica\.com|kohler\.com)$/i.test(correo)) {
+            showError("Correo no autorizado. Usa @novacasacenter.com, @grupodecor.com, @klipengroup.com, @klpcomercial.com, @decorceramica.com o @kohler.com", "correo");
             return;
         }
 

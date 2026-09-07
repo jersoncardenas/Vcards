@@ -5,7 +5,7 @@ const cargarIconos = () => createIcons({ icons: { CheckCircle2, CircleAlert, Eye
 
 const sesion = await fetch("/api/admin/session", { cache: "no-store" }).then(r => r.json()).catch(() => ({ autenticado:false }));
 if (!sesion.autenticado) window.location.replace("/?admin=login");
-const dominioCorporativo = /^[^\s@]+@(novacasacenter\.com|grupodecor\.com|klipengroup\.com|klpcomercial\.com|decorceramica\.com)$/i;
+const dominioCorporativo = /^[^\s@]+@(novacasacenter\.com|grupodecor\.com|klipengroup\.com|klpcomercial\.com|decorceramica\.com|kohler\.com)$/i;
 const tabla = document.getElementById("tablaUsuarios"), editor = document.getElementById("editor");
 const filtroEmpresa = document.getElementById("filtroEmpresa");
 const confirmarEliminacion = document.getElementById("confirmarEliminacion");
