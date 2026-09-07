@@ -3,7 +3,7 @@ import { createIcons, CheckCircle2, CircleAlert, Eye, House, Link, LogOut, Penci
 
 const cargarIconos = () => createIcons({ icons: { CheckCircle2, CircleAlert, Eye, House, Link, LogOut, Pencil, Save, Trash2, TriangleAlert, UserRoundPen, Users, X } });
 
-const sesion = await fetch("/api/admin/session").then(r => r.json()).catch(() => ({ autenticado:false }));
+const sesion = await fetch("/api/admin/session", { cache: "no-store" }).then(r => r.json()).catch(() => ({ autenticado:false }));
 if (!sesion.autenticado) window.location.replace("/?admin=login");
 const dominioCorporativo = /^[^\s@]+@(novacasacenter\.com|grupodecor\.com|klipengroup\.com|klpcomercial\.com|decorceramica\.com)$/i;
 const tabla = document.getElementById("tablaUsuarios"), editor = document.getElementById("editor");
@@ -34,7 +34,7 @@ document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{document.query
 document.getElementById("buscar").oninput=e=>renderUsuarios(e.target.value);
 filtroEmpresa.innerHTML='<option value="">Todas las empresas</option>'+EMPRESAS.map(e=>`<option value="${e.id}">${e.nombre}</option>`).join("");
 filtroEmpresa.onchange=()=>renderUsuarios(document.getElementById("buscar").value);
-document.getElementById("cerrarSesion").onclick=async()=>{await fetch("/api/admin/logout",{method:"POST"});window.location.replace("/");};
+document.getElementById("cerrarSesion").onclick=async()=>{const respuesta=await fetch("/api/admin/logout",{method:"POST",cache:"no-store"});if(!respuesta.ok)return mostrarNotificacion("No fue posible cerrar la sesión.","error");window.location.replace("/?sesion=cerrada");};
 tabla.onclick=e=>{const accion=e.target.closest("[data-eliminar], [data-editar]");if(!accion)return;const token=accion.dataset.eliminar||accion.dataset.editar;const usuario=usuarios.find(u=>u.token===token);if(!usuario)return;if(accion.dataset.eliminar){usuarioAEliminar=usuario;document.getElementById("mensajeEliminacion").textContent=`Estás a punto de eliminar el perfil de ${usuario.nombre}. Esta acción no se puede deshacer.`;confirmarEliminacion.showModal();return;}for(const [id,v] of Object.entries({editToken:usuario.token,editNombre:usuario.nombre,editArea:usuario.area,editDescripcion:usuario.descripcion||"",editTelefono:usuario.telefono,editCorreo:usuario.correo}))document.getElementById(id).value=v;document.getElementById("editEmpresa").innerHTML=opcionesEmpresas(usuario.empresaId);editor.showModal();};
 document.getElementById("cancelarEliminacion").onclick=()=>{usuarioAEliminar=null;confirmarEliminacion.close();};
 document.getElementById("aceptarEliminacion").onclick=async()=>{if(!usuarioAEliminar)return;const usuario=usuarioAEliminar;const boton=document.getElementById("aceptarEliminacion");boton.disabled=true;try{const r=await fetch(`/api/usuarios/${usuario.token}`,{method:"DELETE"});if(!r.ok)throw new Error();confirmarEliminacion.close();usuarioAEliminar=null;await cargarUsuarios();mostrarNotificacion(`El perfil de ${usuario.nombre} fue eliminado correctamente.`);}catch{mostrarNotificacion("No fue posible eliminar el perfil.","error");}finally{boton.disabled=false;}};

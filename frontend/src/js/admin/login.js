@@ -2,7 +2,7 @@ const dialogo = document.getElementById("loginAdmin");
 const error = document.getElementById("errorLogin");
 
 document.getElementById("abrirLogin").addEventListener("click", async () => {
-  const sesion = await fetch("/api/admin/session").then((respuesta) => respuesta.json()).catch(() => ({ autenticado:false }));
+  const sesion = await fetch("/api/admin/session", { cache: "no-store" }).then((respuesta) => respuesta.json()).catch(() => ({ autenticado:false }));
   if (sesion.autenticado) {
     window.location.href = "/admin";
     return;
