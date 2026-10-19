@@ -37,6 +37,7 @@ export const prerender = false;
         <div><h2>Colaboradores</h2><p>Edita la información o elimina perfiles registrados.</p></div>
         <div class="user-filters">
           <label><span>Empresa</span><select id="filtroEmpresa"><option value="">Todas las empresas</option></select></label>
+          <label><span>Ordenar</span><select id="ordenUsuarios"><option value="recientes">Más recientes</option><option value="nombre">Nombre A–Z</option><option value="empresa">Empresa y nombre</option></select></label>
           <label><span>Buscar</span><input id="buscar" type="search" placeholder="Nombre, correo o cargo" /></label>
         </div>
       </div>
@@ -73,6 +74,11 @@ export const prerender = false;
       <label>Teléfono<input id="editTelefono" required pattern="\d{10}" /></label>
       <label>Correo<input id="editCorreo" required type="email" /></label>
       <label>Empresa<select id="editEmpresa" required></select></label>
+      <label class="edit-photo-field">Nueva fotografía <span>(opcional)</span><input id="editFoto" type="file" accept="image/jpeg,image/png,image/webp" /></label>
+      <div class="edit-photo-feedback">
+        <img id="editFotoPreview" class="edit-photo-preview" alt="Vista previa de la nueva fotografía" hidden />
+        <p id="editFotoEstado" class="edit-photo-status">Se conservará la fotografía actual.</p>
+      </div>
       <div class="dialog-actions"><button type="button" class="secondary" id="cancelarEditor">Cancelar</button><button class="primary icon-button" type="submit"><i data-lucide="save" aria-hidden="true"></i>Guardar cambios</button></div>
     </form>
   </dialog>
