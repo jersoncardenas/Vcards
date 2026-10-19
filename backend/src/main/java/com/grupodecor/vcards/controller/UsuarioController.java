@@ -19,8 +19,9 @@ public class UsuarioController {
     }
 
     @PostMapping(value = "/validar_usuario", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public Map<String, String> validar(@RequestParam String correo, @RequestParam String telefono) {
-        usuarios.validarDuplicados(correo, telefono);
+    public Map<String, String> validar(@RequestParam String correo, @RequestParam String telefono,
+                                      @RequestParam("empresa_id") Integer empresaId) {
+        usuarios.validarDuplicados(correo, telefono, empresaId);
         return Map.of("status", "ok");
     }
 

@@ -1,6 +1,43 @@
 const token = window.location.pathname.split("/").pop(); // Aqui se extrae el token de la url
 import { PLANTILLAS, REDES_DECORCERAMICA } from "../datos-locales.js";
 
+async function reforzarOpacidadFoto(foto) {
+    if (!foto?.startsWith("data:image/png")) return foto;
+
+    try {
+        const imagen = new Image();
+        imagen.src = foto;
+        await imagen.decode();
+        const lienzo = document.createElement("canvas");
+        lienzo.width = imagen.naturalWidth;
+        lienzo.height = imagen.naturalHeight;
+        const contexto = lienzo.getContext("2d", { willReadFrequently: true });
+        contexto.drawImage(imagen, 0, 0);
+        const pixeles = contexto.getImageData(0, 0, lienzo.width, lienzo.height);
+
+        for (let indice = 3; indice < pixeles.data.length; indice += 4) {
+            const alfaOriginal = pixeles.data[indice];
+            if (alfaOriginal === 0 || alfaOriginal === 255) continue;
+            if (alfaOriginal <= 8) {
+                pixeles.data[indice] = 0;
+                continue;
+            }
+            if (alfaOriginal >= 55) {
+                pixeles.data[indice] = 255;
+                continue;
+            }
+            const normalizada = (alfaOriginal - 8) / (55 - 8);
+            pixeles.data[indice] = Math.round(normalizada * normalizada * (3 - 2 * normalizada) * 255);
+        }
+
+        contexto.putImageData(pixeles, 0, 0);
+        return lienzo.toDataURL("image/png");
+    } catch (error) {
+        console.warn("No fue posible reforzar la opacidad de la foto:", error);
+        return foto;
+    }
+}
+
 const ocultarCargador = () => {
     const cargador = document.getElementById("cargadorPagina");
     if (!cargador) return;
@@ -91,7 +128,7 @@ const ocultarCargador = () => {
             document.getElementById("descripcion").textContent = data.descripcion;
             document.getElementById("telefono").textContent = `+57 ${data.telefono}`;
             document.getElementById("correo").textContent = data.correo;
-            document.getElementById("fotoPerfil").src = data.foto;
+            document.getElementById("fotoPerfil").src = await reforzarOpacidadFoto(data.foto);
             document.getElementById("titulo").textContent = `Perfil - ${data.nombre_empresa}`;
             // Seleccionar empresa
             const empresaBase = empresas[data.nombre_empresa];

@@ -7,8 +7,17 @@
   word-break: break-word;
 }
 
+:root {
+  --decor-fondo-pagina: #f4f4f4;
+  --decor-fondo-tarjeta: #ffffff;
+  --decor-fondo-cabecera: #e2e3e4;
+  --decor-fondo-seccion: #dedfe0;
+  --decor-texto: #24252b;
+  --decor-texto-secundario: #3f4045;
+}
+
 body {
-  background-color: #f7f5f9;
+  background-color: var(--decor-fondo-pagina);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +26,7 @@ body {
 }
 
 .card {
-  background-color: #fff;
+  background-color: var(--decor-fondo-tarjeta);
   width: 100%;
   max-width: 360px;
   border-radius: 25px;
@@ -31,7 +40,7 @@ body {
   position: relative;
   width: 100%;
   height: 230px;
-background:#592828;
+  background: var(--decor-fondo-cabecera);
 
   border-radius: 20px 20px 0 0;
   display: flex;
@@ -48,6 +57,8 @@ background:#592828;
 
 .logo img {
   width: 105px;
+  filter: brightness(0);
+  opacity: 0.8;
 }
 
 .background-shape {
@@ -64,29 +75,30 @@ background:#592828;
   width: 100%;
   height: 85%;
   object-fit: contain;
-  opacity: 0.8;
+  filter: grayscale(1);
+  opacity: 0.42;
 }
 
 .profile-image {
   position: absolute;
-  top: 50px;
+  top: 35px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
 }
 
 .profile-image img {
-  width: 110px;
-  height: 140px;
-  object-fit: cover;
-  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, black 60%);
-  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, black 60%);
+  width: 170px;
+  height: 190px;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: brightness(0.9) contrast(1.18) saturate(1.2);
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.85) 12%, black 25%);
+  mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.85) 12%, black 25%);
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
 }
 
 .info {
@@ -96,27 +108,27 @@ background:#592828;
 .info h2 {
   font-size: 1.3em;
   font-weight: 600;
-  color: #000000;
+  color: var(--decor-texto);
   margin-top: 10px;
 }
 
 .cargo {
   font-size: 1em;
-  color: #000000;
+  color: var(--decor-texto-secundario);
   font-weight: 400;
   margin-top: 4px;
 }
 
 .descripcion {
   font-size: 0.9em;
-  color: #000000;
+  color: var(--decor-texto-secundario);
   margin: 12px 0;
 }
 
 .section {
   padding: 12px;
   margin-top: 15px;
-  background-color: #ffffff;
+  background-color: var(--decor-fondo-seccion);
   border-radius: 10px;
 }
 
@@ -125,12 +137,12 @@ background:#592828;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  background-color: #592828;
+  background-color: var(--decor-fondo-seccion);
   padding: 20px;
 }
 
 .section.contact h3{
-  color: white;
+  color: var(--decor-texto);
 }
 
 .contactos {
@@ -163,7 +175,7 @@ background:#592828;
 
 .texto p {
   font-size: 0.95em;
-  color: #ffffff;
+  color: var(--decor-texto-secundario);
   margin: 0;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -183,7 +195,7 @@ background:#592828;
   gap: 8px;
   padding: 8px 15px;
   background-color: #ffffff;
-  color: rgb(0, 0, 0);
+  color: var(--decor-texto);
   border-radius: 6px;
   font-size: 0.9em;
   text-decoration: none;
@@ -198,13 +210,13 @@ background:#592828;
   flex: 1;
   padding: 10px;
   margin-top: 15px;
-  background-color: #592828;
+  background-color: var(--decor-fondo-seccion);
   border-radius: 10px;
   text-align: center;
 }
 
 .paginas h3{
-  color: white;
+  color: var(--decor-texto);
 }
 
 .columnas {
@@ -238,7 +250,7 @@ background:#592828;
 .columna p a,
 .columna-dos p a {
   text-decoration: none;
-  color: #ffffff;
+  color: var(--decor-texto);
 }
 
 .columna p a:hover,
@@ -255,11 +267,11 @@ background:#592828;
 
 .section-redes {
   flex: 1;
-  background-color: #592828;
+  background-color: var(--decor-fondo-seccion);
   margin-top: 15px;
   border-radius: 10px;
   padding: 8px 0;
-  color: #ffffff;
+  color: var(--decor-texto);
 }
 
 .section-redes h3 {
@@ -288,12 +300,12 @@ background:#592828;
 
 .social-icons a {
   font-size: 1.2em;
-  color: #ffffff;
+  color: var(--decor-texto);
   transition: 0.3s;
 }
 
 .social-icons a:hover {
-  color: #0077cc;
+  color: #565960;
 }
 
 
@@ -304,8 +316,8 @@ background:#592828;
   }
 
   .profile-image img {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 170px;
   }
 
   .logo img {

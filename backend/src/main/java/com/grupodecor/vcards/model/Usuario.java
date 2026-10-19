@@ -3,7 +3,10 @@ package com.grupodecor.vcards.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "usuarios", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_usuarios_empresa_correo", columnNames = {"empresa_id", "correo"}),
+        @UniqueConstraint(name = "uk_usuarios_empresa_telefono", columnNames = {"empresa_id", "telefono"})
+})
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +18,7 @@ public class Usuario {
     @Column(nullable = false)
     private String telefono;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String correo;
 
     @Column(nullable = false)

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/node": "^11.1.4",
+    "@mediapipe/tasks-vision": "^1.1.1",
     "astro": "^7.2.8",
     "bcryptjs": "^3.0.3",
     "lucide": "^1.40.0",

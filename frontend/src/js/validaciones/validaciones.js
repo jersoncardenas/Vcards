@@ -1,5 +1,6 @@
 // Almaceno en variables las urls del backend y el frontend desde el .env
 import { archivoADataUrl, buscarEmpresa } from "../datos-locales.js";
+import { removerFondoPersona } from "../imagenes/remover-fondo-persona.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector(".form");
@@ -169,25 +170,118 @@ function validarNombreCompleto(nombre) {
         });
     });
 
-    /// Previsualización de la imagen
+    /// Previsualización y recorte automático de la imagen
     const fileInput = form.querySelector('input[type="file"]');
     const preview = form.querySelector(".preview");
     const placeholder = form.querySelector(".placeholder-text");
+    const estadoFoto = document.getElementById("estadoFoto");
+    const formatosImagen = ["jpg", "jpeg", "png", "webp"];
+    const maximoImagenMB = 2;
+    const maximoImagenBytes = maximoImagenMB * 1024 * 1024;
+    let archivoFotoActual = null;
+    let fotoRecortadaActual = null;
+    let recorteEnCurso = null;
+    let versionRecorte = 0;
+
+    function actualizarEstadoFoto(mensaje = "", tipo = "") {
+        if (!estadoFoto) return;
+        estadoFoto.textContent = mensaje;
+        estadoFoto.className = "estado-foto";
+        if (tipo) estadoFoto.classList.add(tipo);
+    }
+
+    function errorArchivoImagen(file) {
+        const extension = file.name.split(".").pop().toLowerCase();
+        if (!formatosImagen.includes(extension)) {
+            return "La imagen debe ser JPG, JPEG, PNG o WEBP";
+        }
+        if (file.size > maximoImagenBytes) {
+            return `La imagen no debe superar los ${maximoImagenMB}MB`;
+        }
+        return "";
+    }
+
+    function iniciarRecorteAutomatico(file) {
+        if (archivoFotoActual === file && fotoRecortadaActual) {
+            return Promise.resolve(fotoRecortadaActual);
+        }
+        if (archivoFotoActual === file && recorteEnCurso) return recorteEnCurso;
+
+        archivoFotoActual = file;
+        fotoRecortadaActual = null;
+        const versionActual = ++versionRecorte;
+        actualizarEstadoFoto("Quitando el fondo automáticamente...", "procesando");
+        preview?.classList.add("procesando");
+
+        const tarea = removerFondoPersona(file)
+            .then(async (fotoRecortada) => {
+                if (versionActual !== versionRecorte || fileInput?.files[0] !== file) {
+                    return fotoRecortada;
+                }
+
+                fotoRecortadaActual = fotoRecortada;
+                const fotoVistaPrevia = await archivoADataUrl(fotoRecortada);
+                preview.src = fotoVistaPrevia;
+                preview.style.display = "block";
+                placeholder.style.display = "none";
+                actualizarEstadoFoto("Fondo eliminado. La foto está lista.", "listo");
+                return fotoRecortada;
+            })
+            .catch((error) => {
+                if (versionActual === versionRecorte && fileInput?.files[0] === file) {
+                    fotoRecortadaActual = null;
+                    actualizarEstadoFoto(error.message, "error");
+                    showError(error.message, fileInput.name);
+                }
+                throw error;
+            })
+            .finally(() => {
+                if (versionActual === versionRecorte) preview?.classList.remove("procesando");
+                if (recorteEnCurso === tarea) recorteEnCurso = null;
+            });
+
+        recorteEnCurso = tarea;
+        return tarea;
+    }
+
     if (fileInput && preview && placeholder) {
         fileInput.addEventListener("change", (event) => {
             const file = event.target.files[0];
             if (file) {
+                const errorImagen = errorArchivoImagen(file);
+                if (errorImagen) {
+                    versionRecorte += 1;
+                    archivoFotoActual = null;
+                    fotoRecortadaActual = null;
+                    recorteEnCurso = null;
+                    preview.src = "";
+                    preview.style.display = "none";
+                    placeholder.style.display = "block";
+                    actualizarEstadoFoto(errorImagen, "error");
+                    showError(errorImagen, fileInput.name);
+                    return;
+                }
+
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    preview.src = e.target.result;
-                    preview.style.display = "block";
-                    placeholder.style.display = "none";
+                    if (fileInput.files[0] === file && !fotoRecortadaActual) {
+                        preview.src = e.target.result;
+                        preview.style.display = "block";
+                        placeholder.style.display = "none";
+                    }
                 };
                 reader.readAsDataURL(file);
+                iniciarRecorteAutomatico(file).catch(() => {});
             } else {
+                versionRecorte += 1;
+                archivoFotoActual = null;
+                fotoRecortadaActual = null;
+                recorteEnCurso = null;
                 preview.src = "";
                 preview.style.display = "none";
                 placeholder.style.display = "block";
+                preview.classList.remove("procesando");
+                actualizarEstadoFoto();
             }
         });
     }
@@ -214,17 +308,9 @@ function validarNombreCompleto(nombre) {
         const imagen = form.querySelector('input[type="file"]');
         if (imagen && imagen.files.length > 0) {
             const file = imagen.files[0];
-            const allowedExtensions = ["jpg", "jpeg", "png", "webp"];
-            const fileExt = file.name.split(".").pop().toLowerCase();
-            // localStorage tiene un limite reducido; 2 MB deja espacio para la foto en base64.
-            const maxSizeMB = 2;
-            const maxSizeBytes = maxSizeMB * 1024 * 1024;
-            if (!allowedExtensions.includes(fileExt)) {
-                showError("La imagen debe ser uno de los siguientes formatos JPG, JPEG, PNG o WEBP", imagen.name);
-                return;
-            }
-            if (file.size > maxSizeBytes) {
-                showError(`La imagen no debe superar los ${maxSizeMB}MB`, imagen.name);
+            const errorImagen = errorArchivoImagen(file);
+            if (errorImagen) {
+                showError(errorImagen, imagen.name);
                 return;
             }
         } else if (imagen) {
@@ -263,6 +349,7 @@ function validarNombreCompleto(nombre) {
         if (errorMsg) { showError(`Cargo: ${errorMsg}`, "area"); return; }
         // Esto evita que se envie muchas veces el formulario
         if (submitBtn) submitBtn.disabled = true;
+        const textoBoton = submitBtn?.textContent || "Generar QR";
         try {
             const empresa = buscarEmpresa(formData.get("empresa_id"));
             if (!empresa) {
@@ -270,7 +357,11 @@ function validarNombreCompleto(nombre) {
                 return;
             }
 
-            const foto = await archivoADataUrl(imagen.files[0]);
+            if (submitBtn) submitBtn.textContent = fotoRecortadaActual ? "Guardando..." : "Esperando el recorte...";
+            const fotoRecortada = await iniciarRecorteAutomatico(imagen.files[0]);
+            const foto = await archivoADataUrl(fotoRecortada);
+            if (preview) preview.src = foto;
+            if (submitBtn) submitBtn.textContent = "Guardando...";
             const respuesta = await fetch("/api/usuarios", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -284,9 +375,12 @@ function validarNombreCompleto(nombre) {
             window.location.href = `/mostrarQR/${resultado.token}`;
         } catch (err) {
             console.error("Error al guardar:", err);
-            showError("No fue posible conectar con la base de datos");
+            showError(err?.name === "PhotoSegmentationError" ? err.message : "No fue posible conectar con la base de datos");
         } finally {
-            if (submitBtn) submitBtn.disabled = false;
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = textoBoton;
+            }
         }
     });
 });

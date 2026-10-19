@@ -33,12 +33,12 @@ public class UsuarioService {
         this.frontendUrl = frontendUrl;
     }
 
-    public void validarDuplicados(String correo, String telefono) {
-        if (usuarios.existsByCorreoIgnoreCase(correo.trim())) {
-            throw new IllegalArgumentException("El correo ya está registrado");
+    public void validarDuplicados(String correo, String telefono, Integer empresaId) {
+        if (usuarios.existsByCorreoIgnoreCaseAndEmpresa_Id(correo.trim(), empresaId)) {
+            throw new IllegalArgumentException("El correo ya está registrado en esta empresa");
         }
-        if (usuarios.existsByTelefono(telefono.trim())) {
-            throw new IllegalArgumentException("El teléfono ya está registrado");
+        if (usuarios.existsByTelefonoAndEmpresa_Id(telefono.trim(), empresaId)) {
+            throw new IllegalArgumentException("El teléfono ya está registrado en esta empresa");
         }
     }
 
@@ -46,7 +46,7 @@ public class UsuarioService {
     public String crear(String nombre, String area, String telefono, String correo,
                         String descripcion, Integer empresaId, MultipartFile foto) {
         validarCampos(nombre, area, telefono, correo, descripcion, foto);
-        validarDuplicados(correo, telefono);
+        validarDuplicados(correo, telefono, empresaId);
 
         Empresa empresa = empresas.findById(empresaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));

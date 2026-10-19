@@ -13,6 +13,12 @@ await cliente.query(`
   alter table empresa_config add column if not exists colores jsonb not null default '{}'::jsonb;
   insert into empresa_config (empresa_id, plantilla_id)
   select id, id from empresas on conflict (empresa_id) do nothing;
+
+  alter table usuarios drop constraint if exists usuarios_correo_key;
+  create unique index if not exists ux_usuarios_empresa_correo
+    on usuarios (empresa_id, correo);
+  create unique index if not exists ux_usuarios_empresa_telefono
+    on usuarios (empresa_id, telefono);
 `);
 await cliente.end();
-console.log("Estructura administrativa preparada correctamente.");
+console.log("Estructura administrativa y unicidad por empresa preparadas correctamente.");

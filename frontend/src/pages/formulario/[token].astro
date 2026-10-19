@@ -25,6 +25,19 @@ export const prerender = false; // Se establece que es una pagina dinamica
             .empresa { grid-column: 3; grid-row: 3; }
             .btn-container { grid-column: 3; grid-row: 4; }
             .file-upload { grid-row: 1 / 5; }
+            .estado-foto {
+                min-height: 1.25rem;
+                margin: 8px 0 0;
+                font-size: 0.82rem;
+                line-height: 1.35;
+                text-align: center;
+                color: #4a5560;
+            }
+            .estado-foto.procesando { color: #555; }
+            .estado-foto.listo { color: #16713d; font-weight: 600; }
+            .estado-foto.error { color: #a52222; font-weight: 600; }
+            .preview { transition: opacity 0.2s ease; }
+            .preview.procesando { opacity: 0.55; }
             @media (max-width: 768px) {
                 .empresa { width: 100%; }
             }
@@ -55,6 +68,7 @@ export const prerender = false; // Se establece que es una pagina dinamica
                     <input type="file" id="fileInput" name="foto" accept="image/*"/>
                     <img class="preview" alt="Vista previa de imagen" />
                     </label>
+                    <p id="estadoFoto" class="estado-foto" aria-live="polite"></p>
                 </div>
 
                 <!-- Columna izquierda -->

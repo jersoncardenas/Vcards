@@ -35,9 +35,10 @@ export function obtenerUsuarios() {
 
 export const obtenerUsuario = (token) => obtenerUsuarios()[token] || null;
 
-export function existeDuplicado(correo, telefono) {
+export function existeDuplicado(correo, telefono, empresaId) {
   return Object.values(obtenerUsuarios()).find((usuario) =>
-    usuario.correo.toLowerCase() === correo.toLowerCase() || usuario.telefono === telefono
+    Number(usuario.empresaId) === Number(empresaId) &&
+    (usuario.correo.toLowerCase() === correo.toLowerCase() || usuario.telefono === telefono)
   );
 }
 

@@ -14,10 +14,19 @@ export async function GET({ cookies }) {
 
 export async function POST({ request }) {
   const datos = await request.json();
-  if (!correoValido.test(datos.correo || "") || !/^\d{10}$/.test(datos.telefono || "")) return Response.json({ error: "Datos no válidos" }, { status: 400 });
-  const duplicado = await query("select correo,telefono from usuarios where lower(correo)=lower($1) or telefono=$2 limit 1", [datos.correo, datos.telefono]);
-  if (duplicado.rowCount) return Response.json({ error: duplicado.rows[0].correo.toLowerCase() === datos.correo.toLowerCase() ? "El correo ya está registrado" : "El teléfono ya está registrado" }, { status: 409 });
+  const empresaId = Number(datos.empresaId);
+  if (!correoValido.test(datos.correo || "") || !/^\d{10}$/.test(datos.telefono || "") || !Number.isInteger(empresaId)) return Response.json({ error: "Datos no válidos" }, { status: 400 });
+  const duplicados = await query(`select
+    exists(select 1 from usuarios where empresa_id=$3 and lower(correo)=lower($1)) as correo,
+    exists(select 1 from usuarios where empresa_id=$3 and telefono=$2) as telefono`, [datos.correo, datos.telefono, empresaId]);
+  if (duplicados.rows[0].correo) return Response.json({ error: "El correo ya está registrado en esta empresa" }, { status: 409 });
+  if (duplicados.rows[0].telefono) return Response.json({ error: "El teléfono ya está registrado en esta empresa" }, { status: 409 });
   const token = crypto.randomUUID().replaceAll("-", "");
-  await query(`insert into usuarios(nombre,telefono,correo,area,descripcion,foto,token,img_qr,empresa_id) values($1,$2,lower($3),$4,$5,$6,$7,null,$8)`, [datos.nombre,datos.telefono,datos.correo,datos.area,datos.descripcion,fotoBuffer(datos.foto),token,Number(datos.empresaId)]);
-  return Response.json({ token }, { status: 201 });
+  try {
+    await query(`insert into usuarios(nombre,telefono,correo,area,descripcion,foto,token,img_qr,empresa_id) values($1,$2,lower($3),$4,$5,$6,$7,null,$8)`, [datos.nombre,datos.telefono,datos.correo,datos.area,datos.descripcion,fotoBuffer(datos.foto),token,empresaId]);
+    return Response.json({ token }, { status: 201 });
+  } catch (error) {
+    if (error?.code === "23505") return Response.json({ error: "El correo o el teléfono ya está registrado en esta empresa" }, { status: 409 });
+    throw error;
+  }
 }
